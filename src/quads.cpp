@@ -88,7 +88,6 @@ void QuadManager::_reparse_data() {
 }
 
 void QuadManager::draw() {
-    // TODO: Check if matrices have been modified and then reparse(also add a use check for shader)
     _vao->bind();
     shader->use();
     _reparse_data();

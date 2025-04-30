@@ -121,7 +121,13 @@ Shader::Shader(const char* vertex_path, const char* frag_path) {
 
 Shader::~Shader() { glDeleteProgram(_ID); }
 
-void Shader::use() { glUseProgram(_ID); }
+void Shader::use() {
+    int active_program = 0;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &active_program);
+    if (active_program != (int)_ID) {
+        glUseProgram(_ID);
+    }
+}
 
 void Shader::set_f1(const char* u_name, float v) {
     std::optional<int> location = _get_location(u_name);
