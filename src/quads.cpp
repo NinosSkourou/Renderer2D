@@ -1,5 +1,15 @@
 #include "quads.h"
 
+glm::mat4 Quad::calc_transform_mat() const {
+    glm::mat4 transform(1.0f);
+
+    transform = glm::translate(transform, glm::vec3(_position.x, _position.y, 0.0f));
+    transform = glm::rotate(transform, _rotation, glm::vec3(0.0f, 0.0f, 1.0f));
+    transform = glm::scale(transform, glm::vec3(_scale.x, _scale.y, 1.0f));
+
+    return transform;
+}
+
 void QuadManager::_init() {
     shader = new Shader{"res/vertex_batch_polygon.glsl", "res/fragment_batch_polygon.glsl"};
     _vao = new VertexArray;
@@ -70,7 +80,8 @@ void QuadManager::_reparse_data() {
 
     for (auto& pair : _objects) {
         auto& quad = pair.second;
-        data.emplace_back(quad->get_color(), quad->get_transform());
+        quad->calc_transform_mat();
+        data.emplace_back(quad->get_color(), quad->calc_transform_mat());
     }
 
     _instance_vbo->write_data(&data[0], sizeof(QuadData) * data.size());

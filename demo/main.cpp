@@ -60,6 +60,8 @@ int main(int argc, char* argv[]) {
     g_quad_manager->add(quad);
 
     glm::vec2 offset{0, 0}, offset2{0, 0};
+    glm::vec2 scale{100.0f}, scale2{100.0f};
+    float rotation = 0, rotation2 = 0;
     while (!glfwWindowShouldClose(g_window)) {
         process_input();
 
@@ -69,10 +71,13 @@ int main(int argc, char* argv[]) {
 
         ImGui::Begin("Transform");
 
-        ImGui::SliderFloat("Offset X", &offset.x, 0.0f, 800.0f);
-        ImGui::SliderFloat("Offset Y", &offset.y, 0.0f, 600.0f);
-        ImGui::SliderFloat("Offset2 X", &offset2.x, 0.0f, 800.0f);
-        ImGui::SliderFloat("Offset2 Y", &offset2.y, 0.0f, 600.0f);
+        ImGui::SliderFloat2("Offset", &offset.x, 0.0f, 800.0f);
+        ImGui::SliderFloat2("Scale", &scale.x, 0.0f, 400.0f);
+        ImGui::SliderFloat("Rotation", &rotation, 0.0f, 2.0f * 3.14f);
+
+        ImGui::SliderFloat2("Offset2", &offset2.x, 0.0f, 800.0f);
+        ImGui::SliderFloat2("Scale2", &scale2.x, 0.0f, 400.0f);
+        ImGui::SliderFloat("Rotation2", &rotation2, 0.0f, 2.0f * 3.14f);
 
         ImGui::End();
 
@@ -81,7 +86,11 @@ int main(int argc, char* argv[]) {
         g_renderer->begin_drawing();
 
         quad->set_position(offset);
+        quad->set_rotation(rotation);
+        quad->set_scale(scale);
         quad2->set_position(offset2);
+        quad2->set_rotation(rotation2);
+        quad2->set_scale(scale2);
         g_quad_manager->draw();
 
         glfwPollEvents();

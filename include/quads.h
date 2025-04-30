@@ -6,10 +6,10 @@
 #include "vertex_array.h"
 
 #include <glad/glad.h>
+#include <glm/ext/matrix_transform.hpp>
 #include <glm/glm.hpp>
 #include <memory>
 #include <unordered_map>
-#include <vector>
 
 struct QuadData {
     QuadData(ColorF c, glm::mat4 t) : color(c), transform(t) {}
@@ -23,7 +23,9 @@ private:
     uint32_t _id;
 
     ColorF _color;
-    glm::mat4 _model_transform{1.0f};
+    glm::vec2 _scale{1.0f};
+    glm::vec2 _position{0.0f};
+    float _rotation = 0.0f;
 
 public:
     Quad(ColorF color) : _color(color) {}
@@ -32,12 +34,11 @@ public:
     void set_id(uint32_t id) { _id = id; }
     uint32_t get_id() const { return _id; }
 
-    void set_position(glm::vec2 position) {
-        _model_transform[3][0] = position.x;
-        _model_transform[3][1] = position.y;
-    }
+    void set_position(glm::vec2 position) { _position = position; }
+    void set_rotation(float rotation) { _rotation = rotation; }
+    void set_scale(glm::vec2 scale) { _scale = scale; }
 
-    const glm::mat4& get_transform() const { return _model_transform; }
+    glm::mat4 calc_transform_mat() const;
     const ColorF& get_color() const { return _color; }
 };
 
@@ -45,8 +46,7 @@ class QuadManager {
 private:
     glm::mat4 _projection_mat, _view_mat;
 
-    static constexpr float s_instance_vertices[] = {
-        0.0f, 0.0f, 100.0f, 0.0f, 100.0f, 100.0f, 0.0f, 100.0f};
+    static constexpr float s_instance_vertices[] = {-0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f};
 
     static constexpr uint32_t s_instance_indices[] = {0, 1, 2, 0, 2, 3};
 
