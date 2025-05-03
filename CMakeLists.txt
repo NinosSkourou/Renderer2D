@@ -8,6 +8,10 @@ SET(BUILD_MODE Debug)
 SET(CMAKE_CXX_FLAGS "-Wall")
 SET(CMAKE_CXX_FLAGS_DEBUG "-ggdb")
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 option(BUILD_DEMO "build demo executable" FALSE)
 
 file(GLOB_RECURSE SRC CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
@@ -43,7 +47,6 @@ target_include_directories( ${CMAKE_PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE
 if(BUILD_DEMO)
     file(GLOB_RECURSE DEMO_SRC "${CMAKE_CURRENT_SOURCE_DIR}/demo/*.cpp")
     add_executable("demo" ${DEMO_SRC})
-    add_subdirectory( vendored/stb )
-    add_subdirectory( vendored/imgui )
-    target_link_libraries("demo" PRIVATE Renderer stb_image imgui)
+    add_subdirectory( demo/vendored/imgui )
+    target_link_libraries("demo" PRIVATE Renderer imgui)
 endif()

@@ -7,8 +7,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 void process_input();
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
