@@ -10,16 +10,14 @@ private:
 
     bool _is_bound();
 
+    static uint32_t s_get_type_size(int type);
+
 public:
     VertexArray();
     ~VertexArray() { glDeleteVertexArrays(1, &_ID); }
 
-    void link_attrib(int slot, uint32_t size, uint32_t type,
-                     unsigned char normalized, uint32_t stride, void* offset);
-
-    void link_generic_attrib(int slot, uint32_t instance_stride, uint32_t size,
-                             uint32_t type, unsigned char normalized,
-                             uint32_t stride, void* offset);
+    void link_attrib(VertexBuffer& buffer,int type, int slot, uint8_t count, uint32_t stride,
+                     uint32_t instance_stride = 0, unsigned char normalized = GL_FALSE);
 
     void bind();
     void unbind();

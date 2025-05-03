@@ -38,26 +38,18 @@ QuadManager::QuadManager() {
     // TODO: maybe implement offset and stride into VertexArray class
 
     _vertex_vbo->bind();
-    _vao->link_attrib(pos_slot, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    _vao->link_attrib(*_vertex_vbo, GL_FLOAT, pos_slot, 2, 2 * sizeof(float));
 
     _vertex_vbo->write_data(s_instance_vertices, sizeof(s_instance_vertices));
     _vertex_ebo->write_data(s_instance_indices, 6);
 
-    _instance_vbo->bind();
-    _vao->link_generic_attrib(color_slot, 1, 4, GL_FLOAT, GL_FALSE,
-                              sizeof(ColorF) + sizeof(glm::mat4), (void*)0);
+    uint32_t stride = sizeof(ColorF) + sizeof(glm::mat4);
+    _vao->link_attrib(*_instance_vbo, GL_FLOAT, color_slot, 4, stride, 1);
 
-    _vao->link_generic_attrib(model_mat_slot, 1, 4, GL_FLOAT, GL_FALSE,
-                              sizeof(ColorF) + sizeof(glm::mat4), (void*)sizeof(ColorF));
-    _vao->link_generic_attrib(model_mat_slot + 1, 1, 4, GL_FLOAT, GL_FALSE,
-                              sizeof(ColorF) + sizeof(glm::mat4),
-                              (void*)(sizeof(ColorF) + (1 * sizeof(glm::vec4))));
-    _vao->link_generic_attrib(model_mat_slot + 2, 1, 4, GL_FLOAT, GL_FALSE,
-                              sizeof(ColorF) + sizeof(glm::mat4),
-                              (void*)(sizeof(ColorF) + (2 * sizeof(glm::vec4))));
-    _vao->link_generic_attrib(model_mat_slot + 3, 1, 4, GL_FLOAT, GL_FALSE,
-                              sizeof(ColorF) + sizeof(glm::mat4),
-                              (void*)(sizeof(ColorF) + (3 * sizeof(glm::vec4))));
+    _vao->link_attrib(*_instance_vbo, GL_FLOAT, model_mat_slot, 4, stride, 1);
+    _vao->link_attrib(*_instance_vbo, GL_FLOAT, model_mat_slot + 1, 4, stride, 1);
+    _vao->link_attrib(*_instance_vbo, GL_FLOAT, model_mat_slot + 2, 4, stride, 1);
+    _vao->link_attrib(*_instance_vbo, GL_FLOAT, model_mat_slot + 3, 4, stride, 1);
 }
 
 void QuadManager::add(std::shared_ptr<Quad> quad) {
