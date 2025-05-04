@@ -72,7 +72,6 @@ void QuadManager::_reparse_data() {
 
     for (auto& pair : _objects) {
         auto& quad = pair.second;
-        quad->calc_transform_mat();
         data.emplace_back(quad->get_color(), quad->calc_transform_mat());
     }
 
@@ -87,7 +86,7 @@ void QuadManager::draw() {
     shader->set_mat_f4("u_projection_mat", _projection_mat);
     shader->set_mat_f4("u_view_mat", _view_mat);
     // TODO: Make wireframe mode toggleable maybe a debug mode?
-    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr, _objects.size());
 }
